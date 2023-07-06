@@ -1,0 +1,40 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package DAO;
+
+import POJO.NhaXuatBan;
+import POJO.TacGia;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+/**
+ *
+ * @author Maitr
+ */
+public class NXBDAO {
+     public ArrayList<NhaXuatBan> getDSNXB() {
+        ArrayList<NhaXuatBan> tacGia = new ArrayList<>();
+        ConnectionDB conet = new ConnectionDB();
+        String query = "SELECT *FROM NHAXUATBAN ;";
+
+        try (Connection connection = conet.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int maNXB = resultSet.getInt("MANXB");
+                String tenNXB = resultSet.getString("TENNXB");
+                String diaChi = resultSet.getString("DIACHI");
+                NhaXuatBan tg = new NhaXuatBan(maNXB, tenNXB,diaChi);
+                tacGia.add(tg);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tacGia;
+    }
+}
